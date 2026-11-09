@@ -11,7 +11,7 @@ const abs = (path) => cfg.siteUrl + path
 export function wordmark(lang, { href = routes.home[lang], cls = 'brand' } = {}) {
   const t = ui[lang]
   return `<a class="${cls}" href="${href}">
-      <svg class="brand-mark" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" focusable="false">${mark}</svg>
+      <svg class="brand-mark" viewBox="0 0 48 48" width="40" height="40" aria-hidden="true" focusable="false">${mark}</svg>
       <span class="brand-text"><span class="brand-name">${cfg.name[lang]}</span><span class="brand-role">${t.specialty}</span></span>
     </a>`
 }

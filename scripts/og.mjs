@@ -38,13 +38,13 @@ h1{font-size:64px;font-weight:660;letter-spacing:-1.6px;line-height:1.05}
 .r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 20%}
 .ring{position:absolute;left:-40px;bottom:70px;width:120px;height:120px;border:3px solid #e9a68a;border-radius:50%}
 </style></head><body>
-<div class="l"><svg class="mark" viewBox="0 0 40 40">${mark}</svg><div class="bar"></div>
+<div class="l"><svg class="mark" viewBox="0 0 48 48">${mark}</svg><div class="bar"></div>
 <h1>${t.name}</h1><div class="cred">${t.cred}</div><div class="role">${t.role}</div>
 <div class="foot"><span>${t.place}</span></div><div class="foot" style="margin-top:12px"><b>${t.phone}</b></div></div>
 <div class="r"><img src="${photo}"><div class="ring"></div></div></body></html>`
 
 const icon = (size) => `<!doctype html><html><head><style>*{margin:0}body{width:${size}px;height:${size}px;background:#0e5c63}svg{display:block}</style></head>
-<body><svg width="${size}" height="${size}" viewBox="0 0 40 40">${mark.replace('rx="11"', `rx="${size >= 180 ? 0 : 11}"`)}</svg></body></html>`
+<body><svg width="${size}" height="${size}" viewBox="0 0 48 48">${mark.replace('rx="13"', `rx="${size >= 180 ? 0 : 13}"`)}</svg></body></html>`
 
 const browser = await chromium.launch()
 const page = await browser.newPage({ deviceScaleFactor: 1 })
@@ -62,6 +62,19 @@ await page.setViewportSize({ width: 48, height: 48 })
 await page.setContent(icon(48).replace('background:#0e5c63', 'background:transparent'))
 const tmp = join(ROOT, 'dist-icon-48.png')
 await page.screenshot({ path: tmp, omitBackground: true })
+// Brand PNG exports (transparent background) for Google Business Profile, cards, letterhead.
+const BRAND = join(ROOT, 'brand')
+const shotSvg = async (file, out, w, h, bg = 'transparent') => {
+  await page.setViewportSize({ width: w, height: h })
+  const svg = readFileSync(join(BRAND, file), 'utf8').replace(/width="[^"]+" height="[^"]+"/, `width="${w}" height="${h}"`)
+  await page.setContent(`<html><body style="margin:0;background:${bg}">${svg}</body></html>`)
+  await page.screenshot({ path: join(BRAND, out), omitBackground: bg === 'transparent' })
+}
+await shotSvg('logo-mark.svg', 'logo-mark-512.png', 512, 512)
+for (const f of ['logo-el', 'logo-en', 'logo-el-dark', 'logo-en-dark']) {
+  const vb = readFileSync(join(BRAND, f + '.svg'), 'utf8').match(/viewBox="0 0 ([\d.]+) 48"/)[1]
+  await shotSvg(f + '.svg', f + '.png', Math.round(Number(vb) * 8), 384)
+}
 await browser.close()
 // favicon.ico (16/32/48) via Pillow
 execFileSync('python3', ['-I', '-c', `from PIL import Image;im=Image.open(${JSON.stringify(tmp)});im.save(${JSON.stringify(join(S, 'favicon.ico'))},sizes=[(16,16),(32,32),(48,48)])`])
