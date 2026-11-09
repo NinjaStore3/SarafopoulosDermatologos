@@ -10,6 +10,9 @@ import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import cfg from '../site.config.mjs'
 
+// Same override as the build (preview deployments).
+if (process.env.SITE_URL) cfg.siteUrl = process.env.SITE_URL.replace(/\/+$/, '')
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const errors = []

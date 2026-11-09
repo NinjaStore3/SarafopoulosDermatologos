@@ -57,6 +57,8 @@ python3 -I scripts/logo.py  # regenerate the logo mark, favicon and brand/*.svg
 
 - **Build command:** `npm run build` · **Output directory:** `dist` · **Node:** 18+ (`NODE_VERSION=22`)
 - The build needs only Node: processed photos, OG images and icons are committed in `src/static/`.
+- **Preview environment variable:** `SITE_URL=https://<project>.pages.dev` so links shared on Viber,
+  WhatsApp or Messenger show the preview card (the OG image needs an absolute URL).
 - **Production environment variable:** `SITE_LAUNCH=1` *only after approval*. It turns on launch mode
   (no `noindex`, strict checks). Preview deployments keep `noindex`, and `_headers` adds
   `X-Robots-Tag: noindex` on every `*.pages.dev` host anyway.

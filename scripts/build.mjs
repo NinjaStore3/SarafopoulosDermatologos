@@ -21,6 +21,9 @@ const DIST = join(ROOT, 'dist')
 const launch = process.argv.includes('--launch') || process.env.SITE_LAUNCH === '1'
 
 if (launch) cfg.noindex = false
+// Preview deployments: SITE_URL (e.g. https://<project>.pages.dev) makes canonical, OG image and
+// sitemap URLs absolute to the preview host, so shared links show a proper preview card.
+if (process.env.SITE_URL) cfg.siteUrl = process.env.SITE_URL.replace(/\/+$/, '')
 // Audit-only build (Lighthouse): indexable pages on a local origin, no launch gate. Never deploy it.
 const audit = process.argv.includes('--audit')
 if (audit) {
@@ -122,7 +125,7 @@ for (const f of out) {
 const unique = [...new Set(todos.map((x) => x.split(': ').slice(1).join(': ')))]
 const problems = []
 if (todos.length) problems.push(`${todos.length} visible [TODO] markers (${unique.length} distinct)`)
-if (/example|todo/i.test(cfg.siteUrl)) problems.push(`siteUrl is a placeholder (${cfg.siteUrl})`)
+if (/example|todo|pages\.dev/i.test(cfg.siteUrl)) problems.push(`siteUrl is not the final domain (${cfg.siteUrl})`)
 if (!cfg.booking.confirmed) problems.push('booking URL not confirmed (site.config.mjs → booking.confirmed)')
 if (!cfg.legalName) problems.push('legalName missing (privacy policy)')
 
