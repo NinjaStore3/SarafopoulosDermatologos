@@ -28,6 +28,76 @@ function ctaButtons(lang, { size = '' } = {}) {
 
 // ─── Home ───────────────────────────────────────────────────────────────────
 
+/** Services list with durations (no prices) + conditions treated. */
+function catalogue(lang, c) {
+  const items = c.items
+    .map((it) => {
+      const name = it.link ? `<a href="${routes[it.link][lang]}">${it.name}</a>` : it.name
+      const note = it.note ? `<span class="pl-note">${it.note}</span>` : ''
+      return `<li><span class="pl-name">${name}${note}</span><span class="pl-dots" aria-hidden="true"></span><span class="pl-time">${it.time.replace(/^(\d+)\s/, '$1&nbsp;')}</span></li>`
+    })
+    .join('\n          ')
+  return `<div class="catalogue">
+      <div class="catalogue-list">
+        <h3>${c.title}</h3>
+        <p class="small">${c.intro}</p>
+        <ul class="price-list">
+          ${items}
+        </ul>
+        ${cfg.eopyy ? `<p class="eopyy">${icon.shield}<span>${c.eopyy}</span></p>` : ''}
+      </div>
+      <div class="catalogue-side">
+        <h3>${c.conditionsTitle}</h3>
+        <ul class="chips chips-strong">${c.conditions.map((x) => `<li>${x}</li>`).join('')}</ul>
+        <p class="small conditions-note">${c.conditionsNote}</p>
+      </div>
+    </div>`
+}
+
+/** Star row with partial fill (SVG clip, no inline styles: the CSP forbids them). */
+function stars(id, ratio) {
+  const star = 'M11 1.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L11 16.4l-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9z'
+  const row = (fill) => [0, 1, 2, 3, 4].map((i) => `<path d="${star}" transform="translate(${i * 24.5} 0)" fill="${fill}"/>`).join('')
+  const n = ratio * 5
+  const width = Math.min(120, Math.floor(n) * 24.5 + (n % 1) * 22)
+  return `<svg class="stars" viewBox="0 0 120 22" width="120" height="22" aria-hidden="true" focusable="false"><defs><clipPath id="stars-${id}"><rect width="${width.toFixed(1)}" height="22"/></clipPath></defs>${row('#d9e2df')}<g clip-path="url(#stars-${id})">${row('#e0956f')}</g></svg>`
+}
+
+function reviewsSection(lang, r, anchor) {
+  const t = ui[lang]
+  const rv = cfg.ratings
+  if (rv.mode === 'none') return ''
+  const num = (x) => (lang === 'el' ? String(x).replace('.', ',') : String(x))
+  const url = (id) => (id === 'google' ? cfg.maps.profile || cfg.maps.search : cfg.booking[lang])
+  const cards =
+    rv.mode === 'score'
+      ? `<ul class="rating-grid">
+      ${rv.platforms
+        .map(
+          (pf) => `<li class="rating-card">
+        <p class="rating-platform">${pf.name}</p>
+        <p class="rating-score"><span class="rating-value">${num(pf.score)}</span><span class="rating-scale" aria-hidden="true">/${pf.scale}</span><span class="visually-hidden"> ${r.outOf(pf.scale)}</span></p>
+        ${stars(pf.id, pf.score / pf.scale)}
+        <p class="rating-count">${r.count(pf.count, pf.id)}</p>
+        <p class="rating-link">${extLink(url(pf.id), r.read, t, 'link-strong')}<span class="visually-hidden"> (${pf.name})</span></p>
+      </li>`,
+        )
+        .join('\n      ')}
+    </ul>`
+      : `<div class="reviews-links">${rv.platforms.map((pf) => extLink(url(pf.id), `${r.read} · ${pf.name}`, t, 'btn btn-secondary')).join('')}</div>`
+  return `
+<section class="section section-tint" id="${anchor}" aria-labelledby="reviews-title">
+  <div class="container reviews">
+    <div class="reviews-intro">
+      <h2 id="reviews-title">${r.h2}</h2>
+      <p>${r.text}</p>
+      ${rv.mode === 'score' ? `<p class="small">${r.note(rv.asOf[lang])}</p>` : ''}
+    </div>
+    ${cards}
+  </div>
+</section>`
+}
+
 function homeBody(lang) {
   const t = ui[lang]
   const c = content[lang]
@@ -100,10 +170,7 @@ function homeBody(lang) {
         ${SERVICE_ORDER.map((id) => serviceCard(svcById(lang, id))).join('\n        ')}
         ${infoCard(s.general, 'stethoscope')}
     </ul>
-    <div class="service-strip">
-      <span class="service-icon">${icon.document}</span>
-      <div><h3>${s.certificates.title}</h3><p>${s.certificates.text} <span class="service-meta-inline">${s.certificates.meta}</span></p></div>
-    </div>
+    ${catalogue(lang, s.catalogue)}
   </div>
 </section>`
 
@@ -136,25 +203,7 @@ function homeBody(lang) {
   </div>
 </section>`
 
-  const r = h.reviews
-  const rv = cfg.ratings
-  const reviews =
-    rv.mode === 'none'
-      ? ''
-      : `
-<section class="section section-tint section-compact" id="${a.reviews}" aria-labelledby="reviews-title">
-  <div class="container reviews">
-    <div>
-      <h2 id="reviews-title">${r.h2}</h2>
-      ${rv.mode === 'score' ? `<p class="reviews-score">${icon.star}<span>${r.score(rv)}</span></p>` : ''}
-      <p>${r.text}</p>
-    </div>
-    <div class="reviews-links">
-      ${extLink(cfg.booking[lang], r.linkDa, t, 'btn btn-secondary')}
-      ${extLink(cfg.maps.profile || cfg.maps.search, r.linkGoogle, t, 'btn btn-secondary')}
-    </div>
-  </div>
-</section>`
+  const reviews = reviewsSection(lang, h.reviews, a.reviews)
 
   const ho = h.hours
   const mapEmbed = lang === 'el' ? cfg.maps.embed : cfg.maps.embedEn

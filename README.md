@@ -46,11 +46,12 @@ npm run serve          # http://localhost:8080 — mimics Cloudflare Pages (exte
 npm run check          # SEO + HTML + JSON-LD + Greek final-ν checks, and glyph coverage of the fonts
 npm run shots          # screenshots (390 + 1440, WebP) into screenshots/, and horizontal-scroll check at 6 widths
 npm run images         # re-process photos from assets-src/photos (needs Python + Pillow)
-npm run og             # re-render OG images + icons (needs Playwright)
+npm run og             # re-render OG images, icons and brand PNGs (needs Playwright)
+python3 -I scripts/logo.py  # regenerate the logo mark, favicon and brand/*.svg
 ```
 
 `npm run bust` is an alias of `build`: CSS/JS are always linked as `style.css?v=<content hash>`.
-`check` needs `pip install fonttools brotli`; `shots`/`og` need Playwright with Chromium.
+`check` needs `pip install fonttools brotli` (the logo script also `uharfbuzz`); `shots`/`og` need Playwright with Chromium.
 
 ## Deploy on Cloudflare Pages
 
@@ -78,6 +79,18 @@ blurs sensitive areas, strips all metadata (EXIF/XMP/ICC) and exports WebP ≤ 2
 
 The originals are only 600–800 px wide, so no 960/1600 px variants exist yet. With full-resolution
 originals from the doctor, add the widths in `scripts/images.py` and run `npm run images`.
+
+## Brand
+
+The logo is a «Σ» monogram (for Σαραφόπουλος) whose top and bottom bars are drawn as gentle skin
+lines, with a small apricot dot: a mole under examination. Teal `#0E5C63`, apricot `#E9A68A`,
+ink `#0C2A30`, font Commissioner. Files in `brand/` need no font installed (text is outlined):
+
+| File | Use |
+|---|---|
+| `logo-mark.svg`, `logo-mark-512.png` | Square mark: Google Business Profile logo, social avatars, favicon |
+| `logo-el.svg/.png`, `logo-en.svg/.png` | Horizontal logo for light backgrounds (cards, letterhead, prescriptions) |
+| `logo-el-dark.*`, `logo-en-dark.*` | Same, for dark backgrounds |
 
 ## Medical & legal guardrails
 
