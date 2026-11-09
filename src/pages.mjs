@@ -1,5 +1,5 @@
 // Page templates (shared by both languages). Content lives in src/content/.
-import { cfg, esc, icon, img, extLink, telHref } from './lib.mjs'
+import { cfg, esc, icon, img, extLink, telHref, bookButton } from './lib.mjs'
 import { ui, routes, anchors } from './i18n.mjs'
 import { page, hoursList, addressLines } from './layout.mjs'
 import * as ld from './jsonld.mjs'
@@ -21,7 +21,7 @@ const svcById = (lang, id) => content[lang].services.find((s) => s.id === id)
 function ctaButtons(lang, { size = '' } = {}) {
   const t = ui[lang]
   return `<div class="cta-row">
-      ${extLink(cfg.booking[lang], t.book, t, `btn btn-primary ${size}`)}
+      ${bookButton(lang, t, size)}
       <a class="btn btn-secondary ${size}" href="${telHref}">${icon.phone}<span>${t.callNumber(cfg.phone)}</span></a>
     </div>`
 }
@@ -363,7 +363,7 @@ export function renderService(lang, svc, assets) {
     <div class="card cta-card">
       <h2>${t.ctaTitle}</h2>
       <p>${t.ctaText}</p>
-      ${extLink(cfg.booking[lang], t.book, t, 'btn btn-primary btn-block')}
+      ${bookButton(lang, t, 'btn-block')}
       <a class="btn btn-secondary btn-block" href="${telHref}">${icon.phone}<span>${t.phoneShown(cfg.phone)}</span></a>
       <address class="small">${addressLines(lang)}</address>
     </div>

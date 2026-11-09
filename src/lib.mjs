@@ -61,6 +61,12 @@ export function extLink(href, label, t, cls = '') {
   return `<a href="${esc(href)}"${cls ? ` class="${cls}"` : ''} target="_blank" rel="noopener">${text}<span class="visually-hidden"> ${t.newTab}</span></a>`
 }
 
+/** Booking button: calendar icon before the label, no external-link arrow
+ *  (the new tab is still announced to screen readers). */
+export function bookButton(lang, t, cls = '') {
+  return `<a href="${esc(cfg.booking[lang])}" class="btn btn-primary${cls ? ` ${cls}` : ''}" target="_blank" rel="noopener">${icon.calendar}<span>${t.book}</span><span class="visually-hidden"> ${t.newTab}</span></a>`
+}
+
 export const telHref = `tel:${cfg.phone.e164}`
 
 export { cfg }
