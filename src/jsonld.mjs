@@ -39,6 +39,7 @@ export function physician(lang, { description, services }) {
     sameAs: [cfg.booking.el, cfg.maps.profile].filter(Boolean),
   }
   if (cfg.email) node.email = cfg.email
+  if (cfg.languages) node.knowsLanguage = cfg.languages
   if (cfg.hours) {
     node.openingHoursSpecification = cfg.hours.map((h) => ({
       '@type': 'OpeningHoursSpecification',

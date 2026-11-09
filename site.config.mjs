@@ -21,19 +21,26 @@ export default {
 
   phone: { display: '210 577 4392', international: '+30 210 577 4392', e164: '+302105774392' },
 
-  // [TODO: email] Optional. Shown in contact + privacy policy when set.
-  email: null,
+  // Shown in contact, footer, privacy policy and JSON-LD. (Provided by the client.)
+  email: 'christos.sandravelis@gmail.com',
 
-  // [TODO: legal name] Controller named in the privacy policy.
-  legalName: null,
+  // Data controller named in the privacy policy. A sole-practitioner practice:
+  // the controller is the doctor himself. Change if the practice is a company.
+  legalName: {
+    el: 'Ανδρέας Σαραφόπουλος, ιατρός δερματολόγος – αφροδισιολόγος',
+    en: 'Andreas Sarafopoulos, dermatologist–venereologist',
+  },
 
-  // Online booking. Slug found in public search results; doctoranytime was not
-  // reachable from the build sandbox, so set `confirmed: true` after the client
-  // confirms the exact profile URL.
+  // Practicalities confirmed by the client.
+  eopyy: true, // contracted with ΕΟΠΥΥ
+  languages: ['el', 'en'], // the doctor speaks Greek and English
+  elevator: true, // step-free: ramp at the entrance + lift
+
+  // Online booking (profile URL confirmed by the client).
   booking: {
     el: 'https://www.doctoranytime.gr/d/Dermatologos/sarafopoulos-andreas',
     en: 'https://www.doctoranytime.gr/en/d/dermatologist-venereologist/sarafopoulos-andreas',
-    confirmed: false,
+    confirmed: true,
   },
 
   address: {
@@ -59,26 +66,35 @@ export default {
     search: 'https://www.google.com/maps/search/?api=1&query=%CE%A3%CE%B1%CF%81%CE%B1%CF%86%CF%8C%CF%80%CE%BF%CF%85%CE%BB%CE%BF%CF%82+%CE%B4%CE%B5%CF%81%CE%BC%CE%B1%CF%84%CE%BF%CE%BB%CF%8C%CE%B3%CE%BF%CF%82+%CE%8A%CE%BB%CE%B9%CE%BF%CE%BD',
   },
 
-  // [TODO: hours] Google only shows «κλείνει 8 μ.μ.». Fill in, e.g.:
+  // [TODO: hours] Not confirmed. Google shows «κλείνει 8 μ.μ.»; third-party listings disagree:
+  //   Fresha:        Mon–Thu 10:00–14:00 & 17:00–21:00, Fri 09:00–17:00
+  //   NoSecretSalon: Mon–Thu 10:00–14:00 only
+  // Once confirmed, fill in like this (one entry per time block):
   // hours: [
-  //   { days: ['Mo', 'We', 'Fr'], opens: '09:00', closes: '14:00' },
-  //   { days: ['Mo', 'Tu', 'Th'], opens: '17:00', closes: '20:00' },
+  //   { days: ['Mo', 'Tu', 'We', 'Th'], opens: '10:00', closes: '14:00' },
+  //   { days: ['Mo', 'Tu', 'We', 'Th'], opens: '17:00', closes: '20:00' },
+  //   { days: ['Fr'], opens: '09:00', closes: '17:00' },
   // ],
   hours: null,
 
-  // [TODO: decision] Show the medical licence number in the footer?
-  licence: { number: '16896', show: false },
+  // Medical licence number, shown in the footer.
+  licence: { number: '16896', show: true },
 
-  // [TODO: decision] Reviews section:
-  //   'link'  → only links to doctoranytime and Google (default, most conservative)
-  //   'score' → also shows «9,9/10 από 524 αξιολογήσεις στο doctoranytime»
-  //   'none'  → hide the section
+  // Reviews section: 'score' (rating cards), 'link' (links only) or 'none'.
+  // Update the numbers from time to time and change `asOf` with them.
   // Never copy individual patient reviews onto the site, and never add aggregateRating markup.
-  ratings: { mode: 'link', score: '9,9/10', count: 524 },
+  ratings: {
+    mode: 'score',
+    asOf: { el: 'Νοεμβρίου 2026', en: 'November 2026' },
+    platforms: [
+      { id: 'doctoranytime', name: 'doctoranytime', score: 9.9, scale: 10, count: 524 },
+      { id: 'google', name: 'Google', score: 4.5, scale: 5, count: 66 },
+    ],
+  },
 
   areasServed: {
-    el: ['Ίλιον (Νέα Λιόσια)', 'Περιστέρι', 'Πετρούπολη', 'Καματερό', 'Άγιοι Ανάργυροι', 'Καμίνια'],
-    en: ['Ilion (Nea Liosia)', 'Peristeri', 'Petroupoli', 'Kamatero', 'Agioi Anargyroi', 'Kaminia'],
+    el: ['Ίλιον (Νέα Λιόσια)', 'Περιστέρι', 'Πετρούπολη', 'Καματερό', 'Άγιοι Ανάργυροι'],
+    en: ['Ilion (Nea Liosia)', 'Peristeri', 'Petroupoli', 'Kamatero', 'Agioi Anargyroi'],
   },
 
   studio: { name: 'Istoselidakias', url: 'https://istoselidakias.gr' },

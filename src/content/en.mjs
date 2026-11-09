@@ -7,13 +7,13 @@ const tel = `<a href="${telHref}">${cfg.phone.international}</a>`
 export const home = {
   title: 'Dermatologist in Ilion, Athens | Dr Andreas Sarafopoulos',
   description:
-    'Dermatologist–venereologist in Ilion, western Athens, opposite the Town Hall. Mole checks, acne, genital warts (HPV), dermatosurgery. +30 210 577 4392.',
+    'Dermatologist–venereologist in Ilion, western Athens. EOPYY contracted, Greek and English spoken. Mole checks, acne, genital warts (HPV), dermatosurgery.',
   hero: {
     eyebrow: 'Dermatology practice · Ilion, Athens',
     name: 'Dr Andreas Sarafopoulos',
     role: 'Dermatologist – Venereologist in Ilion,&nbsp;Athens',
     lead: 'Clinical dermatology, mole checks with dermoscopy, treatment of acne and genital warts (HPV), dermatosurgery and aesthetic dermatology. The practice is at Menelaou 74, opposite Ilion Town Hall in the western suburbs of Athens.',
-    trust: ['MD, MSc', 'Master’s degree, University of Athens', 'Trained at Evangelismos Hospital', 'Step-free entrance'],
+    trust: ['MD, MSc', 'EOPYY contracted', 'Greek & English spoken', 'Trained at Evangelismos Hospital', 'Step-free access'],
     imgAlt: 'Dermatologist Andreas Sarafopoulos in a white coat, next to the practice’s digital dermoscopy system',
   },
   doctor: {
@@ -41,10 +41,23 @@ export const home = {
       text: 'Examination for any skin, hair or nail problem, such as eczema, psoriasis, fungal infections, hives or hair loss.',
       meta: '30 minutes',
     },
-    certificates: {
-      title: 'Medical certificates',
-      text: 'A skin examination and a certificate, for example for a swimming pool, sports or work.',
-      meta: '30 minutes',
+    catalogue: {
+      title: 'List of services',
+      intro: 'Approximate duration of each visit. For costs, please call the practice.',
+      items: [
+        { name: 'General consultation', time: '30 minutes' },
+        { name: 'Mole check with dermoscopy', time: '30 minutes', link: 'moles' },
+        { name: 'Mole mapping', time: '40 minutes', link: 'moles' },
+        { name: 'Acne treatment', time: '30 minutes', link: 'acne' },
+        { name: 'Genital warts (HPV)', time: '30 minutes', link: 'hpv' },
+        { name: 'Dermatosurgery', time: 'varies', link: 'surgery' },
+        { name: 'Aesthetic dermatology, assessment', time: '30 minutes', link: 'aesthetic' },
+        { name: 'Medical certificates', time: '30 minutes', note: 'e.g. for a swimming pool, sports or work' },
+      ],
+      eopyy: 'The doctor is contracted with EOPYY, the Greek national health insurer.',
+      conditionsTitle: 'Conditions treated',
+      conditionsNote: 'For any problem with your skin, hair or nails, book a general consultation.',
+      conditions: ['Acne', 'Eczema and atopic dermatitis', 'Psoriasis', 'Rosacea', 'Fungal infections of skin and nails', 'Hair loss', 'Hives (urticaria)', 'Common warts', 'Genital warts', 'Herpes', 'Sexually transmitted infections', 'Moles'],
     },
     specialInterest: 'Special interest',
   },
@@ -57,22 +70,23 @@ export const home = {
       { img: 'diadromos', alt: 'A hallway with a bookcase and an open door to the examination room', caption: 'Hallway to the examination room' },
     ],
     access: {
-      title: 'Step-free entrance',
-      text: `The building entrance at Menelaou 74 has a ramp with a handrail, so you can come in without steps, in a wheelchair or with a pushchair. ${todo('which floor the practice is on and whether there is a lift')}`,
+      title: 'Step-free access',
+      text: 'The building entrance at Menelaou 74 has a ramp with a handrail and the building has a lift, so you can reach the practice without steps, in a wheelchair or with a pushchair.',
       imgAlt: 'The entrance of building number 74, with a ramp and a metal handrail',
     },
   },
   reviews: {
     h2: 'Patient reviews',
-    text: 'You can read patients’ reviews of the practice on the platforms where they are published.',
-    score: (r) => `${r.score.replace(',', '.')} from ${r.count} reviews on doctoranytime`,
-    linkDa: 'Reviews on doctoranytime',
-    linkGoogle: 'Reviews on Google',
+    text: 'Patients rate their visits on doctoranytime and Google. See the overall rating and read the reviews where they are published.',
+    count: (n) => `${n} reviews`,
+    outOf: (scale) => `out of ${scale}`,
+    read: 'Read the reviews',
+    note: (asOf) => `Figures from ${asOf}, as shown on each platform.`,
   },
   hours: {
     h2: 'Hours and access',
     gettingHere: 'Getting here',
-    gettingHereText: `The practice is in central Ilion, on the corner of Menelaou and Kalchou Streets, opposite the Town Hall. ${todo('parking information')}`,
+    gettingHereText: 'The practice is in central Ilion, on the corner of Menelaou and Kalchou Streets, opposite the Town Hall. The entrance has a ramp and the building has a lift.',
     areasTitle: 'Areas',
     areasText: 'Patients come to the practice from Ilion and from nearby areas of western Athens:',
     buildingAlt: 'The practice building on the corner of Menelaou and Kalchou Streets in Ilion',
@@ -94,8 +108,16 @@ export const faqs = [
     a: `You can book online through doctoranytime, where you can see the available times, or call ${tel}.`,
   },
   {
+    q: 'Can I have my appointment in English?',
+    a: 'Yes. The doctor speaks Greek and English.',
+  },
+  {
+    q: 'Is the doctor contracted with EOPYY?',
+    a: `Yes. EOPYY is the Greek national health insurer. To book a visit through EOPYY, call ${tel} to ask about availability and what to bring.`,
+  },
+  {
     q: 'Do I need a referral?',
-    a: `You do not need a referral to visit the private practice. ${todo('contract with EOPYY (the national health insurer): yes or no')}`,
+    a: 'You do not need a referral for a private visit. For a visit through EOPYY, please ask by phone what applies in your case.',
   },
   {
     q: 'How long does a mole check take?',
@@ -119,19 +141,11 @@ export const faqs = [
   },
   {
     q: 'Is the practice wheelchair accessible?',
-    a: `The building entrance has a ramp with a handrail. ${todo('which floor the practice is on and whether there is a lift')}`,
+    a: 'Yes. The building entrance has a ramp with a handrail and the building has a lift.',
   },
   {
-    q: 'Where can I park?',
-    a: todo('parking near the practice'),
-  },
-  {
-    q: 'How much does a visit cost and how can I pay?',
-    a: `You can ask about the cost of each service by phone on ${tel}. ${todo('payment methods, e.g. cash or card')}`,
-  },
-  {
-    q: 'Can I have my appointment in English?',
-    a: todo('languages the doctor speaks'),
+    q: 'How much does a visit cost?',
+    a: `You can ask about the cost of each service and the payment methods by phone on ${tel}.`,
   },
 ]
 
@@ -144,7 +158,7 @@ export const privacy = {
 <p class="lead">This website is for information only. It has no contact forms, no user accounts, no cookies and no analytics or advertising tools. Below we explain what data is processed when you visit it.</p>
 
 <h2>Data controller</h2>
-<p>${cfg.legalName || todo('legal name of the practice')}<br>
+<p>${cfg.legalName?.en || todo('legal name of the practice')}<br>
 Menelaou 74 & Kalchou, 131 22 Ilion, Attica, Greece<br>
 Phone: ${tel}${cfg.email ? `<br>Email: <a href="mailto:${cfg.email}">${cfg.email}</a>` : ''}</p>
 
