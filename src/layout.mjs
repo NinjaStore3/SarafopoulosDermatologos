@@ -1,5 +1,5 @@
 // Page shell: <head>, header, footer and the sticky mobile call bar.
-import { cfg, esc, icon, extLink, telHref, todo } from './lib.mjs'
+import { cfg, esc, icon, extLink, telHref, todo, bookButton } from './lib.mjs'
 import { ui, routes, anchors } from './i18n.mjs'
 import { readFileSync } from 'node:fs'
 
@@ -81,7 +81,7 @@ function header(lang, { alt }) {
       </ul>
       <div class="nav-actions">
         <a class="lang-switch" href="${switchHref}" hreflang="${sw.lang}" lang="${sw.lang}">${sw.short}<span class="visually-hidden"> – ${sw.label}</span></a>
-        ${extLink(cfg.booking[lang], t.book, t, 'btn btn-primary btn-sm')}
+        ${bookButton(lang, t, 'btn-sm')}
       </div>
     </nav>
   </div>
