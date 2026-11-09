@@ -66,16 +66,12 @@ export default {
     search: 'https://www.google.com/maps/search/?api=1&query=%CE%A3%CE%B1%CF%81%CE%B1%CF%86%CF%8C%CF%80%CE%BF%CF%85%CE%BB%CE%BF%CF%82+%CE%B4%CE%B5%CF%81%CE%BC%CE%B1%CF%84%CE%BF%CE%BB%CF%8C%CE%B3%CE%BF%CF%82+%CE%8A%CE%BB%CE%B9%CE%BF%CE%BD',
   },
 
-  // [TODO: hours] Not confirmed. Google shows «κλείνει 8 μ.μ.»; third-party listings disagree:
-  //   Fresha:        Mon–Thu 10:00–14:00 & 17:00–21:00, Fri 09:00–17:00
-  //   NoSecretSalon: Mon–Thu 10:00–14:00 only
-  // Once confirmed, fill in like this (one entry per time block):
-  // hours: [
-  //   { days: ['Mo', 'Tu', 'We', 'Th'], opens: '10:00', closes: '14:00' },
-  //   { days: ['Mo', 'Tu', 'We', 'Th'], opens: '17:00', closes: '20:00' },
-  //   { days: ['Fr'], opens: '09:00', closes: '17:00' },
-  // ],
-  hours: null,
+  // Opening hours, from the Google Business Profile (November 2026). One entry per time block.
+  hours: [
+    { days: ['Mo', 'Tu', 'We', 'Th'], opens: '10:00', closes: '13:30' },
+    { days: ['Fr'], opens: '10:00', closes: '13:00' },
+    { days: ['Mo', 'Tu', 'We', 'Fr'], opens: '16:00', closes: '20:00' },
+  ],
 
   // Medical licence number, shown in the footer.
   licence: { number: '16896', show: true },

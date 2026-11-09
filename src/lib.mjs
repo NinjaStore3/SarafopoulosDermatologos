@@ -57,7 +57,7 @@ export function extLink(href, label, t, cls = '') {
   // Outside buttons, keep the icon glued to the last word so it never wraps alone.
   let text = `${label}${icon.external}`
   const i = label.lastIndexOf(' ')
-  if (!/\bbtn\b/.test(cls) && i > 0) text = `${label.slice(0, i + 1)}<span class="nowrap">${label.slice(i + 1)}${icon.external}</span>`
+  if (!/\bbtn\b/.test(cls)) text = `${label.slice(0, i + 1)}<span class="nowrap">${label.slice(i + 1)}${icon.external}</span>`
   return `<a href="${esc(href)}"${cls ? ` class="${cls}"` : ''} target="_blank" rel="noopener">${text}<span class="visually-hidden"> ${t.newTab}</span></a>`
 }
 
