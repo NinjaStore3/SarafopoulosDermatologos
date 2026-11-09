@@ -21,6 +21,12 @@ const DIST = join(ROOT, 'dist')
 const launch = process.argv.includes('--launch') || process.env.SITE_LAUNCH === '1'
 
 if (launch) cfg.noindex = false
+// Audit-only build (Lighthouse): indexable pages on a local origin, no launch gate. Never deploy it.
+const audit = process.argv.includes('--audit')
+if (audit) {
+  cfg.noindex = false
+  cfg.siteUrl = process.env.AUDIT_URL || 'http://localhost:8080'
+}
 
 // Date the privacy policy text last changed (update when you edit it).
 const PRIVACY_UPDATED = { iso: '2026-11-09', el: '9 Νοεμβρίου 2026', en: '9 November 2026' }
@@ -32,6 +38,17 @@ const { renderHome, renderService, renderPrivacy, render404, content } = await i
 rmSync(DIST, { recursive: true, force: true })
 mkdirSync(DIST, { recursive: true })
 cpSync(join(SRC, 'static'), DIST, { recursive: true })
+
+// Light CSS minification (comments + whitespace); the source stays readable in src/.
+{
+  const f = join(DIST, 'css/style.css')
+  const min = readFileSync(f, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\s*\n\s*/g, '')
+    .replace(/\s*([{};,>])\s*/g, '$1')
+    .replace(/;}/g, '}')
+  writeFileSync(f, min)
+}
 
 // ── 2. Cache-busting hashes ─────────────────────────────────────────────────
 const hash = (file) => createHash('sha256').update(readFileSync(join(DIST, file))).digest('hex').slice(0, 10)
@@ -115,7 +132,7 @@ const size = (dir) =>
     return n + (statSync(p).isDirectory() ? size(p) : statSync(p).size)
   }, 0)
 
-console.log(`Built ${out.length} pages into ${relative(ROOT, DIST)}/ (${Math.round(size(DIST) / 1024)} KB) — ${launch ? 'LAUNCH' : 'preview (noindex)'}`)
+console.log(`Built ${out.length} pages into ${relative(ROOT, DIST)}/ (${Math.round(size(DIST) / 1024)} KB) — ${launch ? 'LAUNCH' : audit ? 'AUDIT ONLY (indexable, local origin, do not deploy)' : 'preview (noindex)'}`)
 console.log(`CSS ${assets.css}  JS ${assets.js}`)
 if (problems.length) {
   console.log(`\nOpen items before launch:\n  - ${problems.join('\n  - ')}`)
