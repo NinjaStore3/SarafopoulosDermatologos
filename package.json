@@ -1,0 +1,20 @@
+{
+  "name": "sarafopoulos-dermatologos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website of Andreas Sarafopoulos MD, MSc, Dermatologist–Venereologist, Ilion (Greek + English). Static, no framework, deployed on Cloudflare Pages.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:launch": "node scripts/build.mjs --launch",
+    "bust": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "images": "python3 -I scripts/images.py",
+    "og": "node scripts/og.mjs",
+    "check": "node scripts/check.mjs && python3 -I scripts/check_glyphs.py",
+    "shots": "node scripts/shots.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
