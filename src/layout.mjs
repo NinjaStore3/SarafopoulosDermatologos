@@ -94,7 +94,10 @@ export function hoursList(lang) {
   const order = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
   const rows = order
     .map((d) => {
-      const slots = cfg.hours.filter((h) => h.days.includes(d)).map((h) => `${h.opens}–${h.closes}`)
+      const slots = cfg.hours
+        .filter((h) => h.days.includes(d))
+        .sort((x, y) => x.opens.localeCompare(y.opens))
+        .map((h) => `<span class="nowrap">${h.opens}–${h.closes}</span>`)
       return `<tr><th scope="row">${t.days[d]}</th><td>${slots.length ? slots.join(', ') : t.closed}</td></tr>`
     })
     .join('')

@@ -276,8 +276,8 @@ function homeBody(lang) {
     <ul class="contact-grid">
       <li class="contact-card"><span class="service-icon">${icon.phone}</span><h3>${t.phone}</h3><p><a class="link-strong big" href="${telHref}">${t.phoneShown(cfg.phone)}</a></p></li>
       <li class="contact-card"><span class="service-icon">${icon.calendar}</span><h3>${t.bookingOnline}</h3><p>${extLink(cfg.booking[lang], `doctoranytime`, t, 'link-strong big')}</p></li>
+      <li class="contact-card contact-card-hours"><span class="service-icon">${icon.clock}</span><h3>${t.hours}</h3>${hoursList(lang)}</li>
       <li class="contact-card"><span class="service-icon">${icon.pin}</span><h3>${t.address}</h3><address>${addressLines(lang)}</address><p>${extLink(cfg.maps.directions, t.directions, t)}</p></li>
-      <li class="contact-card"><span class="service-icon">${icon.clock}</span><h3>${t.hours}</h3>${hoursList(lang)}</li>
       ${emailCard}
     </ul>
   </div>

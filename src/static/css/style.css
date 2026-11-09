@@ -394,8 +394,11 @@ a:not(.btn) .nowrap .icon { margin-left: 0.3em; vertical-align: -0.12em; }
 
 /* ---------- Contact ---------- */
 .contact-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
-@media (min-width: 640px) { .contact-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .contact-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 640px) {
+  .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  .contact-card-hours { grid-row: span 2; }
+}
+@media (min-width: 1024px) { .contact-grid { grid-template-columns: repeat(3, 1fr); } }
 .contact-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
 .contact-card h3 { margin: 16px 0 8px; font-size: 1.125rem; }
 .contact-card p:last-child { margin-bottom: 0; }
